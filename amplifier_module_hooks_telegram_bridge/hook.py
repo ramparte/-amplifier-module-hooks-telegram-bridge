@@ -24,9 +24,9 @@ class TelegramBridgeHook:
     DEFAULT_EVENTS = [
         HookRegistry.SESSION_START,
         HookRegistry.PROMPT_SUBMIT,
-        HookRegistry.PROMPT_COMPLETE,
-        HookRegistry.PROVIDER_REQUEST,
-        HookRegistry.PROVIDER_RESPONSE,
+        "prompt:complete",  # String literal - not in HookRegistry constants
+        "provider:request",  # String literal - not in HookRegistry constants
+        "provider:response",  # String literal - not in HookRegistry constants
         HookRegistry.TOOL_POST,
     ]
 
