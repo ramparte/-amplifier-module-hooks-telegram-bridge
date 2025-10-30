@@ -1,0 +1,63 @@
+# Example Mount Plan for Telegram Bridge Hook Module
+#
+# This demonstrates how to configure the hook module in an Amplifier session.
+# Replace YOUR_BOT_TOKEN with your actual Telegram bot token from @BotFather.
+
+session:
+  orchestrator: loop-streaming
+  context: context-persistent
+
+providers:
+  - module: provider-anthropic
+    source: git+https://github.com/microsoft/amplifier-module-provider-anthropic@main
+    config:
+      model: claude-sonnet-4
+      temperature: 0.7
+
+hooks:
+  - module: hooks-telegram-bridge
+    # For local testing:
+    source: file:///workspaces/amplifier/amplifier-module-hooks-telegram-bridge
+    # For production:
+    # source: git+https://github.com/ramparte/amplifier-module-hooks-telegram-bridge@main
+    config:
+      # REQUIRED: Your Telegram bot token from @BotFather
+      bot_token: "YOUR_BOT_TOKEN"
+
+      # Path to pairing file (will be created if doesn't exist)
+      pairing_file: ".amplifier/telegram_pairing.json"
+
+      # Timeout for sending messages (seconds)
+      send_timeout: 5
+
+      # Interval for retrying queued messages (seconds)
+      reconnect_interval: 60
+
+      # Events to observe and send to Telegram
+      events:
+        - "session:start"
+        - "session:end"
+        - "prompt:submit"
+        - "prompt:complete"
+        - "provider:request"
+        - "provider:response"
+        - "tool:post"
+
+# Example pairing.json content:
+# {
+#   "version": "1.0",
+#   "authorized_users": [
+#     {
+#       "user_id": 123456789,
+#       "chat_id": 123456789,
+#       "username": "alice",
+#       "paired_at": "2025-10-29T10:30:00Z"
+#     }
+#   ],
+#   "rate_limits": {}
+# }
+#
+# To find your user_id and chat_id:
+# 1. Start chat with your bot
+# 2. Message @userinfobot to get your IDs
+# 3. Add to pairing.json

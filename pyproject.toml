@@ -1,0 +1,41 @@
+[project]
+name = "amplifier-module-hooks-telegram-bridge"
+version = "1.0.0"
+description = "Telegram bridge hook module for Amplifier - pushes session events to Telegram"
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Amplifier Contributors" },
+]
+dependencies = [
+    "requests>=2.31.0",
+    "pydantic>=2.0.0",
+]
+
+[project.entry-points."amplifier.modules"]
+hooks-telegram-bridge = "amplifier_module_hooks_telegram_bridge:mount"
+
+[build-system]
+requires = [
+    "hatchling",
+]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "amplifier_module_hooks_telegram_bridge",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-asyncio>=0.24.0",
+    "responses>=0.25.0",
+]
